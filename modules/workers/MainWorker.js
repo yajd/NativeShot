@@ -470,6 +470,7 @@ function shootMon(mons) {
 					// if display is secondary mirror of another display, skip it
 					var rez_CGDisplayMirrorsDisplay = ostypes.API('CGDisplayMirrorsDisplay')(displays[i]);
 					console.info('rez_CGDisplayMirrorsDisplay:', rez_CGDisplayMirrorsDisplay.toString(), uneval(rez_CGDisplayMirrorsDisplay), cutils.jscGetDeepest(rez_CGDisplayMirrorsDisplay));
+					console.info('ostypes.CONST.kCGNullDirectDisplay:', ostypes.CONST.kCGNullDirectDisplay.toString());
 					return []; // DEBUG
 					if (!cutils.jscEqual(rez_CGDisplayMirrorsDisplay, ostypes.CONST.kCGNullDirectDisplay)) {
 						continue;
