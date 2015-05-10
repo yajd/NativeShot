@@ -185,7 +185,6 @@ var macTypes = function() {
 	this.Class = ctypes.voidptr_t;
 	
 	// SIMPLE OBJC STRUCTS
-	this.Class = ctypes.StructType('objc_class');
 	
 	// ADV OBJC STRUCTS
 	
@@ -415,8 +414,8 @@ var macInit = function() {
 		},
 		CGRectGetHeight: function() {
 			return lib('CoreGraphics').declare('CGRectGetHeight', self.TYPE.ABI,
-				this.CGFloat,
-				this.CGRect
+				self.TYPE.CGFloat,
+				self.TYPE.CGRect
 			);
 		},
 		CGRectGetWidth: function() {
@@ -467,7 +466,7 @@ var macInit = function() {
 			 */
 			return lib('objc').declare('sel_registerName', self.TYPE.ABI,
 				self.TYPE.SEL,		// return
-				self.type.char.ptr	// *str
+				self.TYPE.char.ptr	// *str
 			);
 		}
 	};
@@ -487,14 +486,14 @@ var macInit = function() {
 		_selLC: {}, // LC = Lazy Cache
 		sel: function(jsStrSEL) {
 			if (!(jsStrSEL in self.HELPER._selLC)) {
-				self.HELPER._selLC = self.API('sel_registerName')(jsStrSEL);
+				self.HELPER._selLC[jsStrSEL] = self.API('sel_registerName')(jsStrSEL);
 			}
 			return self.HELPER._selLC[jsStrSEL];
 		},
 		_classLC: {}, // LC = Lazy Cache
 		class: function(jsStrCLASS) {
 			if (!(jsStrCLASS in self.HELPER._classLC)) {
-				self.HELPER._classLC = self.API('objc_getClass')(jsStrCLASS);
+				self.HELPER._classLC[jsStrCLASS] = self.API('objc_getClass')(jsStrCLASS);
 			}
 			return self.HELPER._classLC[jsStrCLASS];
 		},
@@ -509,7 +508,7 @@ var macInit = function() {
 				if (!(jsStr in this.coll)) {
 					this.coll[jsStr] = self.API('objc_msgSend')(self.HELPER.class('NSString'), self.HELPER.sel('alloc'));;
 					console.info('this.coll[jsStr]:', this.coll[jsStr].toString());
-					var rez_initWithUTF8String = self.API('objc_msgSend')(this.NSString, self.HELPER.sel('initWithUTF8String:'), self.TYPE.char.array()(jsStr));
+					var rez_initWithUTF8String = self.API('objc_msgSend')(this.coll[jsStr], self.HELPER.sel('initWithUTF8String:'), self.TYPE.char.array()(jsStr));
 					console.info('rez_initWithUTF8String:', rez_initWithUTF8String.toString(), 'this.coll[jsStr]:', this.coll[jsStr].toString());
 				}
 				return this.coll[jsStr];
