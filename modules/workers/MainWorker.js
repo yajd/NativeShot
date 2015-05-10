@@ -440,17 +440,19 @@ function shootMon(mons) {
 			break;
 		case 'darwin':
 				
-				var displays = ostypes.TYPE.CGDirectDisplayID.array(32);
+				var displays = ostypes.TYPE.CGDirectDisplayID.array(32)(); // i guess max possible monitors is 32
 				var count = ostypes.TYPE.uint32_t();
+				console.info('displays.constructor.size:', displays.constructor.size);
+				console.info('ostypes.TYPE.CGDirectDisplayID.size:', ostypes.TYPE.CGDirectDisplayID.size);
 				
-				var maxDisplays = displays.constructor.size / displays[0].constructor.size;
-				var activeDspys = displays.address();
+				var maxDisplays = displays.constructor.size / ostypes.TYPE.CGDirectDisplayID.size;
+				var activeDspys = displays; // displays.address() didnt work it threw `expected type pointer, got ctypes.uint32_t.array(32).ptr(ctypes.UInt64("0x11e978080"))` // the arg in declare is `self.TYPE.CGDirectDisplayID.ptr,	// *activeDisplays` // without .address() worked
 				var dspyCnt = count.address();
 				console.info('maxDisplays:', maxDisplays);
 				
 				var rez_CGGetActiveDisplayList = ostypes.API('CGGetActiveDisplayList')(maxDisplays, activeDspys, dspyCnt);
 				console.info('rez_CGGetActiveDisplayList:', rez_CGGetActiveDisplayList.toString(), uneval(rez_CGGetActiveDisplayList), cutils.jscGetDeepest(rez_CGGetActiveDisplayList));
-				if (!cutils.jscEqual(rez_CGGetActiveDisplayList, kCGErrorSuccess)) {
+				if (!cutils.jscEqual(rez_CGGetActiveDisplayList, ostypes.CONST.kCGErrorSuccess)) {
 					console.error('Failed , errno:', ctypes.errno);
 					throw new Error({
 						name: 'os-api-error',
@@ -468,17 +470,21 @@ function shootMon(mons) {
 					// if display is secondary mirror of another display, skip it
 					var rez_CGDisplayMirrorsDisplay = ostypes.API('CGDisplayMirrorsDisplay')(displays[i]);
 					console.info('rez_CGDisplayMirrorsDisplay:', rez_CGDisplayMirrorsDisplay.toString(), uneval(rez_CGDisplayMirrorsDisplay), cutils.jscGetDeepest(rez_CGDisplayMirrorsDisplay));
-					if (!cutils.jscEqual(rez_CGDisplayMirrorsDisplay, kCGNullDirectDisplay)) {
+					return []; // DEBUG
+					if (!cutils.jscEqual(rez_CGDisplayMirrorsDisplay, ostypes.CONST.kCGNullDirectDisplay)) {
 						continue;
 					}
 					i_nonMirror[i] = null;
 					
+					console.info('displays[i]:', displays[i]);
+					return [];
+					
 					var rez_CGDisplayBounds = ostypes.API('CGDisplayBounds')(displays[i]);
 					console.info('rez_CGDisplayBounds:', rez_CGDisplayBounds.toString(), uneval(rez_CGDisplayBounds), cutils.jscGetDeepest(rez_CGDisplayBounds));
-					
+					return []; // DEBUG
 					rect = ostypes.API('CGRectUnion')(rect, rez_CGDisplayBounds);
 				}
-				
+				return []; // DEBUG
 				/*
 				NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                                          pixelsWide:CGRectGetWidth(rect)
