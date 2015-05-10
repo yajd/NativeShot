@@ -43,7 +43,7 @@ var macTypes = function() {
 	this.CFTypeRef = ctypes.voidptr_t;
 	this.CGDirectDisplayID = ctypes.uint32_t;
 	this.CGError = ctypes.int32_t;
-	this.CGFloat = is64bit ? ctypes.float32_t : ctypes.float64_t; // ctypes.float deosntw ork as of May 10th 2015 see this bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1163406 this would cause crash on CGDisplayGetBounds http://stackoverflow.com/questions/28216681/how-can-i-get-screenshot-from-all-displays-on-mac#comment48414568_28247749
+	this.CGFloat = is64bit ? ctypes.float64_t : ctypes.float32_t; // ctypes.float deosntw ork as of May 10th 2015 see this bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1163406 this would cause crash on CGDisplayGetBounds http://stackoverflow.com/questions/28216681/how-can-i-get-screenshot-from-all-displays-on-mac#comment48414568_28247749
 	this.ConstStr255Param = ctypes.unsigned_char.ptr;
 	this.ConstStringPtr = ctypes.unsigned_char.ptr;
 	this.OpaqueDialogPtr = ctypes.StructType("OpaqueDialogPtr");
@@ -85,12 +85,12 @@ var macTypes = function() {
 	this.__CFRunLoop = ctypes.StructType("__CFRunLoop");
 	this.__CFString = ctypes.StructType('__CFString');
 	this.__CFURL = ctypes.StructType('__CFURL');
-    this.__FSEventStream = ctypes.StructType("__FSEventStream");
+	this.__FSEventStream = ctypes.StructType("__FSEventStream");
 	this.CGImage = ctypes.StructType('CGImage');
 	this.CGContext = ctypes.StructType('CGContext');
 	this.CGPoint = ctypes.StructType('CGPoint', [
-		{x: this.CGFloat},
-		{y: this.CGFloat}
+		{ x: this.CGFloat },
+		{ y: this.CGFloat }
 	]);
 	this.Point = ctypes.StructType('Point', [
 		{ v: this.short },
@@ -205,7 +205,7 @@ var macInit = function() {
 		get CGRectNull () { if (!('CGRectNull' in _const)) { _const['CGRectNull'] = lib('CoreGraphics').declare('CGRectNull', self.TYPE.CGRect); } return _const['CGRectNull']; },
 		get kCFTypeArrayCallBacks () { if (!('kCFTypeArrayCallBacks' in _const)) { _const['kCFTypeArrayCallBacks'] = lib('CoreFoundation').declare('kCFTypeArrayCallBacks', self.TYPE.CFArrayCallBacks); } return _const['kCFTypeArrayCallBacks']; },
 		kCGErrorSuccess: 0,
-		kCGNullDirectDisplay: 0, // i guess on this one based on some github searching
+		kCGNullDirectDisplay: 0,
 		///////// OBJC
 		NO: 0, //self.TYPE.BOOL(0)
 		NSPNGFileType: 4,
