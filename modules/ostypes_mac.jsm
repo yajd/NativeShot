@@ -503,25 +503,23 @@ var macInit = function() {
 			// if get and it doesnt exist then it makes and stores it
 			// if get and already exists then it returns that lazy
 			// can releaseAll on it
-			this.NSString = self.API('objc_msgSend')(self.HELPER.class('NSString'), self.HELPER.sel('alloc'));
 			this.coll = {};
 			
 			this.get = function(jsStr) {
 				if (!(jsStr in this.coll)) {
-					this.coll[jsStr] = self.API('objc_msgSend')(this.NSString, self.HELPER.sel('initWithUTF8String:'), self.TYPE.char.array()(jsStr));
+					this.coll[jsStr] = self.API('objc_msgSend')(self.HELPER.class('NSString'), self.HELPER.sel('alloc'));;
+					console.info('this.coll[jsStr]:', this.coll[jsStr].toString());
+					var rez_initWithUTF8String = self.API('objc_msgSend')(this.NSString, self.HELPER.sel('initWithUTF8String:'), self.TYPE.char.array()(jsStr));
+					console.info('rez_initWithUTF8String:', rez_initWithUTF8String.toString(), 'this.coll[jsStr]:', this.coll[jsStr].toString());
 				}
 				return this.coll[jsStr];
 			};
 			
-			this.destroy = function() {
-				// releases everything
+			this.releaseAll = function() {
 				for (var nsstring in this.coll) {
 					self.API('objc_msgSend')(this.coll[nsstring], self.HELPER.sel('release'));
 				}
 				this.coll = null;
-				
-				self.API('objc_msgSend')(this.NSString, self.HELPER.sel('release'));
-				this.NSString = null;
 			};
 		}
 	};
