@@ -473,9 +473,9 @@ function shootMon(mons) {
 					var rez_CGDisplayMirrorsDisplay = ostypes.API('CGDisplayMirrorsDisplay')(displays[i]);
 					
 					console.info('rez_CGDisplayMirrorsDisplay:', rez_CGDisplayMirrorsDisplay.toString(), uneval(rez_CGDisplayMirrorsDisplay), cutils.jscGetDeepest(rez_CGDisplayMirrorsDisplay));
-					console.info('ostypes.CONST.kCGNullDirectDisplay:', ostypes.CONST.kCGNullDirectDisplay.toString());
-					console.info('displays[i] post loop:', displays[i].toString());
-					return []; // DEBUG
+					//console.info('ostypes.CONST.kCGNullDirectDisplay:', ostypes.CONST.kCGNullDirectDisplay.toString());
+					//console.info('displays[i] post loop:', displays[i].toString());
+					continue;
 					if (!cutils.jscEqual(rez_CGDisplayMirrorsDisplay, ostypes.CONST.kCGNullDirectDisplay)) {
 						continue;
 					}
