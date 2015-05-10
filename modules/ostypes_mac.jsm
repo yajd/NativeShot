@@ -43,7 +43,7 @@ var macTypes = function() {
 	this.CFTypeRef = ctypes.voidptr_t;
 	this.CGDirectDisplayID = ctypes.uint32_t;
 	this.CGError = ctypes.int32_t;
-	this.CGFloat = ctypes.double;
+	this.CGFloat = is64bit ? ctypes.float32_t : ctypes.float64_t; // ctypes.float deosntw ork as of May 10th 2015 see this bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1163406 this would cause crash on CGDisplayGetBounds http://stackoverflow.com/questions/28216681/how-can-i-get-screenshot-from-all-displays-on-mac#comment48414568_28247749
 	this.ConstStr255Param = ctypes.unsigned_char.ptr;
 	this.ConstStringPtr = ctypes.unsigned_char.ptr;
 	this.OpaqueDialogPtr = ctypes.StructType("OpaqueDialogPtr");
