@@ -479,7 +479,7 @@ function shootMon(mons) {
 					i_nonMirror[i] = null;
 					
 					var rez_CGDisplayBounds = ostypes.API('CGDisplayBounds')(displays[i]);
-					//console.info('rez_CGDisplayBounds:', rez_CGDisplayBounds.toString(), uneval(rez_CGDisplayBounds), cutils.jscGetDeepest(rez_CGDisplayBounds));
+					console.info('rez_CGDisplayBounds:', rez_CGDisplayBounds.toString(), uneval(rez_CGDisplayBounds));
 					return []; // DEBUG
 					rect = ostypes.API('CGRectUnion')(rect, rez_CGDisplayBounds);
 				}
