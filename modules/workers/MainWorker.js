@@ -467,30 +467,27 @@ function shootMon(mons) {
 				
 				var rect = ostypes.CONST.CGRectNull;
 				for (var i=0; i<count; i++) {
-					console.info('displays[i] pre loop:', displays[i].toString());
 					// if display is secondary mirror of another display, skip it
+					console.info('displays[i]:', displays[i]);
 					
-					var rez_CGDisplayMirrorsDisplay = ostypes.API('CGDisplayMirrorsDisplay')(displays[i]);
-					
+					var rez_CGDisplayMirrorsDisplay = ostypes.API('CGDisplayMirrorsDisplay')(displays[i]);					
 					console.info('rez_CGDisplayMirrorsDisplay:', rez_CGDisplayMirrorsDisplay.toString(), uneval(rez_CGDisplayMirrorsDisplay), cutils.jscGetDeepest(rez_CGDisplayMirrorsDisplay));
-					//console.info('ostypes.CONST.kCGNullDirectDisplay:', ostypes.CONST.kCGNullDirectDisplay.toString());
-					//console.info('displays[i] post loop:', displays[i].toString());
-					continue;
-					if (!cutils.jscEqual(rez_CGDisplayMirrorsDisplay, ostypes.CONST.kCGNullDirectDisplay)) {
+
+					if (!cutils.jscEqual(rez_CGDisplayMirrorsDisplay, ostypes.CONST.kCGNullDirectDisplay)) { // If CGDisplayMirrorsDisplay() returns 0 (a.k.a. kCGNullDirectDisplay), then that means the display is not mirrored.
 						continue;
 					}
 					i_nonMirror[i] = null;
 					
-					console.info('displays[i]:', displays[i]);
-					return [];
-					
-					
-					//var rez_CGDisplayBounds = ostypes.API('CGDisplayBounds')(displays[i]);
+					var rez_CGDisplayBounds = ostypes.API('CGDisplayBounds')(displays[i]);
 					//console.info('rez_CGDisplayBounds:', rez_CGDisplayBounds.toString(), uneval(rez_CGDisplayBounds), cutils.jscGetDeepest(rez_CGDisplayBounds));
 					return []; // DEBUG
 					rect = ostypes.API('CGRectUnion')(rect, rez_CGDisplayBounds);
 				}
 				return []; // DEBUG
+				if (Object.keys(i_nonMirror).length == 0) {
+					// what on earth, no monitors that arent mirrors?
+					return []; // as there is nothing to screenshot
+				}
 				/*
 				NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                                          pixelsWide:CGRectGetWidth(rect)
