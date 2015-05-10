@@ -467,10 +467,14 @@ function shootMon(mons) {
 				
 				var rect = ostypes.CONST.CGRectNull;
 				for (var i=0; i<count; i++) {
+					console.info('displays[i] pre loop:', displays[i].toString());
 					// if display is secondary mirror of another display, skip it
+					
 					var rez_CGDisplayMirrorsDisplay = ostypes.API('CGDisplayMirrorsDisplay')(displays[i]);
+					
 					console.info('rez_CGDisplayMirrorsDisplay:', rez_CGDisplayMirrorsDisplay.toString(), uneval(rez_CGDisplayMirrorsDisplay), cutils.jscGetDeepest(rez_CGDisplayMirrorsDisplay));
 					console.info('ostypes.CONST.kCGNullDirectDisplay:', ostypes.CONST.kCGNullDirectDisplay.toString());
+					console.info('displays[i] post loop:', displays[i].toString());
 					return []; // DEBUG
 					if (!cutils.jscEqual(rez_CGDisplayMirrorsDisplay, ostypes.CONST.kCGNullDirectDisplay)) {
 						continue;
@@ -480,8 +484,9 @@ function shootMon(mons) {
 					console.info('displays[i]:', displays[i]);
 					return [];
 					
-					var rez_CGDisplayBounds = ostypes.API('CGDisplayBounds')(displays[i]);
-					console.info('rez_CGDisplayBounds:', rez_CGDisplayBounds.toString(), uneval(rez_CGDisplayBounds), cutils.jscGetDeepest(rez_CGDisplayBounds));
+					
+					//var rez_CGDisplayBounds = ostypes.API('CGDisplayBounds')(displays[i]);
+					//console.info('rez_CGDisplayBounds:', rez_CGDisplayBounds.toString(), uneval(rez_CGDisplayBounds), cutils.jscGetDeepest(rez_CGDisplayBounds));
 					return []; // DEBUG
 					rect = ostypes.API('CGRectUnion')(rect, rez_CGDisplayBounds);
 				}
