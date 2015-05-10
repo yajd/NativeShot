@@ -466,6 +466,7 @@ function shootMon(mons) {
 				var i_nonMirror = {};
 				
 				var rect = ostypes.CONST.CGRectNull;
+				console.info('rect preloop:', rect.toString());
 				for (var i=0; i<count; i++) {
 					// if display is secondary mirror of another display, skip it
 					console.info('displays[i]:', displays[i]);
@@ -479,15 +480,17 @@ function shootMon(mons) {
 					i_nonMirror[i] = null;
 					
 					var rez_CGDisplayBounds = ostypes.API('CGDisplayBounds')(displays[i]);
-					console.info('rez_CGDisplayBounds:', rez_CGDisplayBounds.toString(), uneval(rez_CGDisplayBounds));
-					return []; // DEBUG
+					console.info('rez_CGDisplayBounds:', rez_CGDisplayBounds.toString(), uneval(rez_CGDisplayBounds)/*, cutils.jscGetDeepest(rez_CGDisplayBounds)*/); // :todo: fix cutils.jscEqual because its throwing `Error: cannot convert to primitive value` for ctypes.float64_t and ctypes.double ACTUALLY its a struct, so no duhhh so no :todo:
+					
 					rect = ostypes.API('CGRectUnion')(rect, rez_CGDisplayBounds);
+					console.info('rect post loop ' + i + ':', rect.toString());
 				}
-				return []; // DEBUG
+				
 				if (Object.keys(i_nonMirror).length == 0) {
 					// what on earth, no monitors that arent mirrors?
 					return []; // as there is nothing to screenshot
 				}
+				
 				/*
 				NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                                          pixelsWide:CGRectGetWidth(rect)
@@ -633,7 +636,7 @@ function shootMon(mons) {
 						ostypes.API('objc_msgSend')(allocNSBIP, ostypes.HELPER.sel('release'));
 					}
 					if (myNSStrings) {
-						myNSStrings.destroy()
+						myNSStrings.releaseAll()
 					}
 				}
 			break;
