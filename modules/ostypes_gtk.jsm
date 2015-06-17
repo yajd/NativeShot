@@ -215,6 +215,35 @@ var gtkInit = function() {
 
 	// start - predefine your declares here
 	var preDec = { //stands for pre-declare (so its just lazy stuff) //this must be pre-populated by dev // do it alphabateized by key so its ez to look through
+		gdk_drawable_get_size: function() {
+			/* https://developer.gnome.org/gdk3/stable/gdk3-Windows.html#gdk-window-get-origin
+			 * gint gdk_window_get_origin (GdkWindow *window,
+			 *   gint *x,
+             *   gint *y
+             * );
+			 */
+			return lib('gdk2').declare('gdk_drawable_get_size', self.TYPE.ABI,
+				self.TYPE.gint,			// return
+				self.TYPE.GdkWindow.ptr,// *window
+				self.TYPE.gint.ptr,		// *x
+				self.TYPE.gint.ptr		// *y
+			);
+		},
+		gdk_window_get_origin: function() {
+			/* https://developer.gnome.org/gdk3/stable/gdk3-Windows.html#gdk-window-get-origin
+			 * gint gdk_window_get_origin (
+			 *   GdkWindow *window,
+			 *   gint *x,
+             *   gint *y
+             * );
+			 */
+			return lib('gdk2').declare('gdk_window_get_origin', self.TYPE.ABI,
+				self.TYPE.gint,			// return
+				self.TYPE.GdkWindow.ptr,// *window
+				self.TYPE.gint.ptr,		// *x
+				self.TYPE.gint.ptr		// *y
+			);
+		},
 		gtk_widget_get_window: function() {
 			/* https://developer.gnome.org/gtk3/stable/GtkWidget.html#gtk-widget-get-window
 			 * GdkWindow *gtk_widget_get_window (
