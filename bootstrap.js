@@ -352,7 +352,12 @@ function startup(aData, aReason) {
 				}, 5000);
 			} else {
 				// imemdiate freeze
-				takeShot(aDOMWin);
+				aDOMWin.setTimeout(
+					function() {
+						takeShot(aDOMWin);
+					}
+				, 5000);
+				
 			}
 		}
 	});
